@@ -42,6 +42,18 @@ func (api AccountApi) CreateAccount() gin.HandlerFunc {
 	}
 }
 
+func (api AccountApi) DeleteAccount() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
+
+		result := api.service.DeleteAccount(id)
+
+		if !result {
+			accountNotFound(c, id)
+		}
+	}
+}
+
 func (api *AccountApi) GetAccount() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		id := c.Param("id")

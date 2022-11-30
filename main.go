@@ -22,6 +22,7 @@ func main() {
 	account := router.Group("/api/account")
 
 	account.GET(":id", api.GetAccount())
+	account.DELETE(":id", api.DeleteAccount())
 	account.PUT(":id/deposit", api.DepositIntoAccount())
 	account.PUT(":id/withdraw", api.WithdrawFromAccount())
 	account.GET(":id/balance", api.GetBalance())

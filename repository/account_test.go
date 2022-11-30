@@ -50,3 +50,27 @@ func TestGetAccount(t *testing.T) {
 		t.Errorf("expected account to be account with id %q", id)
 	}
 }
+
+func TestDeleteAccount(t *testing.T) {
+	repo := accountRepository{
+		accounts: make(map[string]*service.Account),
+	}
+
+	const id string = "123"
+	repoAccount := service.NewAccount(id, "Test", "Abc", 0)
+
+	repo.accounts[id] = &repoAccount
+
+	result := repo.DeleteAccount(id)
+
+	if result == false {
+		t.Error("expected true but got false")
+		return
+	}
+
+	_, exists := repo.accounts[id]
+
+	if exists {
+		t.Errorf("expected account with id %q to be deleted", id)
+	}
+}

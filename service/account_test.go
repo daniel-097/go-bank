@@ -19,6 +19,10 @@ func (repo *mockAccountRepository) CreateNewAccount(request CreateAccountRequest
 	return &account
 }
 
+func (repo *mockAccountRepository) DeleteAccount(id string) bool {
+	return id == "exists"
+}
+
 func (repo *mockAccountRepository) GetAccount(id string) *Account {
 	if id == "exists" {
 		account := NewAccount(id, "Test", "Account", 10)
@@ -75,6 +79,28 @@ func TestGetAccount(t *testing.T) {
 
 		if result == nil {
 			t.Error("expected an account handler to be created but got nil")
+		}
+	})
+}
+
+func TestDeleteAccount(t *testing.T) {
+	mockRepo := mockAccountRepository{}
+	mockHandler := mockAccountHandler{}
+	accountService := NewAccountService(&mockHandler, &mockRepo)
+
+	t.Run("DeleteNotExists", func(t *testing.T) {
+		result := accountService.DeleteAccount("Abc")
+
+		if result != false {
+			t.Error("expected false as the account did not exist")
+		}
+	})
+
+	t.Run("GetExists", func(t *testing.T) {
+		result := accountService.DeleteAccount("exists")
+
+		if result != true {
+			t.Error("expected account to be deleted")
 		}
 	})
 }

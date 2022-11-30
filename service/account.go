@@ -6,11 +6,13 @@ type AccountHandler interface {
 
 type AccountRepository interface {
 	CreateNewAccount(request CreateAccountRequest) *Account
+	DeleteAccount(id string) bool
 	GetAccount(id string) *Account
 }
 
 type AccountService interface {
 	CreateAccount(request CreateAccountRequest) *AccountWithChannels
+	DeleteAccount(id string) bool
 	GetAccount(id string) *AccountWithChannels
 }
 
@@ -31,6 +33,10 @@ func (service *accountService) CreateAccount(request CreateAccountRequest) *Acco
 	}
 
 	return service.handler.HandleChannels(account)
+}
+
+func (service *accountService) DeleteAccount(id string) bool {
+	return service.repo.DeleteAccount(id)
 }
 
 func (service *accountService) GetAccount(id string) *AccountWithChannels {

@@ -23,6 +23,16 @@ func (repo *accountRepository) CreateNewAccount(request service.CreateAccountReq
 	return &account
 }
 
+func (repo *accountRepository) DeleteAccount(id string) bool {
+	_, exists := repo.accounts[id]
+
+	if exists {
+		delete(repo.accounts, id)
+	}
+
+	return exists
+}
+
 func (repo *accountRepository) GetAccount(id string) *service.Account {
 	account, exists := repo.accounts[id]
 
